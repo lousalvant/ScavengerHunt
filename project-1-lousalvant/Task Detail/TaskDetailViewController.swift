@@ -1,6 +1,7 @@
 import UIKit
 import MapKit
 import PhotosUI
+import CoreLocation
 
 class PhotoViewController: UIViewController {
    
@@ -14,7 +15,7 @@ class PhotoViewController: UIViewController {
    }
  }
 
-class TaskDetailViewController: UIViewController {
+class TaskDetailViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, CLLocationManagerDelegate {
 
     @IBOutlet private weak var completedImageView: UIImageView!
     @IBOutlet private weak var completedLabel: UILabel!
@@ -28,6 +29,8 @@ class TaskDetailViewController: UIViewController {
     @IBOutlet private weak var mapView: MKMapView!
 
     var task: Task!
+    
+    var locationManager: CLLocationManager? // Location Manager
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,12 +38,18 @@ class TaskDetailViewController: UIViewController {
         // Register custom annotation view
         mapView.register(TaskAnnotationView.self, forAnnotationViewWithReuseIdentifier: TaskAnnotationView.identifier)
 
-        // TODO: Set mapView delegate
         // Set mapView delegate
         mapView.delegate = self
 
         // UI Candy
         mapView.layer.cornerRadius = 12
+        
+        // Location Manager Setup
+            locationManager = CLLocationManager()
+            locationManager?.delegate = self
+            locationManager?.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+            locationManager?.requestWhenInUseAuthorization()
+            locationManager?.startUpdatingLocation()
 
 
         updateUI()
@@ -106,6 +115,60 @@ class TaskDetailViewController: UIViewController {
         }
 
     }
+    
+    @IBAction func didTapCameraButton(_ sender: Any) {
+        // Check if the device has a camera
+        if UIImagePickerController.isSourceTypeAvailable(.camera) {
+                    let imagePickerController = UIImagePickerController()
+                    imagePickerController.delegate = self
+                    imagePickerController.sourceType = .camera
+                    imagePickerController.allowsEditing = false
+                    present(imagePickerController, animated: true, completion: nil)
+                } else {
+                    let alert = UIAlertController(title: "No Camera", message: "This device has no camera.", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: .default))
+                    present(alert, animated: true, completion: nil)
+                }
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+            picker.dismiss(animated: true, completion: nil)
+            
+            // Get the captured image
+            if let image = info[.originalImage] as? UIImage {
+                // Use the current location as the image's location
+                if let location = locationManager?.location {
+                    self.task.set(image, with: location)
+                    print("📍 Image location coordinate: \(location.coordinate)")
+                } else {
+                    // If location is not available, use a default location
+                    self.task.set(image, with: CLLocation(latitude: 0, longitude: 0)) // Default location
+                }
+                
+                // Update the UI and map view
+                self.updateUI()
+                self.updateMapView()
+            }
+        }
+    
+    // CLLocationManager Delegate Method
+        func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+            if let location = locations.last {
+                // Handle location update
+                print("Current location: \(location.coordinate)")
+                manager.stopUpdatingLocation() // Stop updating to save battery
+            }
+        }
+
+        func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+            print("Failed to get user location: \(error.localizedDescription)")
+        }
+
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true, completion: nil)
+    }
+
+    
 
     private func presentImagePicker() {
         // Create a configuration object

@@ -166,7 +166,7 @@
                                 </subviews>
                             </stackView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cp3-T1-mz5">
-                                <rect key="frame" x="141" y="683" width="110" height="35"/>
+                                <rect key="frame" x="141" y="746" width="110" height="35"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" title="View Photo"/>
@@ -187,7 +187,13 @@
                             <constraint firstItem="z7f-7m-bhf" firstAttribute="top" secondItem="TUy-KL-1uN" secondAttribute="bottom" constant="24" id="vmw-l0-giB"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" largeTitleDisplayMode="never" id="104-xw-WeG"/>
+                    <navigationItem key="navigationItem" largeTitleDisplayMode="never" id="104-xw-WeG">
+                        <barButtonItem key="rightBarButtonItem" image="camera.shutter.button" catalog="system" id="s28-A7-mfw">
+                            <connections>
+                                <action selector="didTapCameraButton:" destination="Vta-Yk-hcv" id="dZb-L3-8jg"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="attachPhotoButton" destination="hjS-o7-0m7" id="bgq-Jt-qTo"/>
                         <outlet property="completedImageView" destination="Seb-yc-GYT" id="uJg-Ch-Qne"/>
@@ -211,7 +217,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YWo-Gv-RAf">
-                                <rect key="frame" x="75" y="108" width="240" height="128"/>
+                                <rect key="frame" x="76" y="253" width="240" height="128"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                         </subviews>
@@ -225,7 +231,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZpQ-qD-PIL" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1120" y="-665"/>
+            <point key="canvasLocation" x="1119.8473282442749" y="-665.49295774647885"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="fgM-Wo-Kso">
@@ -322,6 +328,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="camera.shutter.button" catalog="system" width="128" height="108"/>
         <image name="circle.inset.filled" catalog="system" width="128" height="123"/>
         <image name="plus" catalog="system" width="128" height="113"/>
         <systemColor name="systemBackgroundColor">
