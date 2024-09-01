@@ -12,6 +12,16 @@ class TaskListViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var emptyStateLabel: UILabel!
     
+    // Create a label for your name
+    let nameLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Lou Salvant - Z23637852"
+        label.textAlignment = .center
+        label.font = UIFont.systemFont(ofSize: 14)
+        label.textColor = .gray
+        return label
+    }()
+
     var tasks = [Task]() {
         didSet {
             emptyStateLabel.isHidden = !tasks.isEmpty
@@ -26,11 +36,13 @@ class TaskListViewController: UIViewController {
         tableView.tableHeaderView = UIView()
 
         tableView.dataSource = self
-        tableView.delegate = self  // Set the delegate here
 
         // Populate mocked data
         // Comment out this line if you want the app to load without any existing tasks.
         tasks = Task.mockedTasks
+        
+        // Configure and add the name label to the view
+        setupNameLabel()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -41,8 +53,26 @@ class TaskListViewController: UIViewController {
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "DetailSegue" {
+
+        // Segue to Compose View Controller
+        if segue.identifier == "ComposeSegue" {
+
+            // Since the segue is connected to the navigation controller that manages the ComposeViewController
+            // we need to access the navigation controller first...
+            if let composeNavController = segue.destination as? UINavigationController,
+                // ...then get the actual ComposeViewController via the navController's `topViewController` property.
+               let composeViewController = composeNavController.topViewController as? TaskComposeViewController {
+
+                // Update the tasks array for any new task passed back via the `onComposeTask` closure.
+                composeViewController.onComposeTask = { [weak self] task in
+                    self?.tasks.append(task)
+                }
+            }
+
+            // Segue to Detail View Controller
+        } else if segue.identifier == "DetailSegue" {
             if let detailViewController = segue.destination as? TaskDetailViewController,
+                // Get the index path for the current selected table view row.
                let selectedIndexPath = tableView.indexPathForSelectedRow {
 
                 // Get the task associated with the selected index path
@@ -53,9 +83,23 @@ class TaskListViewController: UIViewController {
             }
         }
     }
+
+    private func setupNameLabel() {
+        // Add the label to the view
+        view.addSubview(nameLabel)
+        
+        // Disable auto-resizing mask
+        nameLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Add constraints to position the label at the bottom
+        NSLayoutConstraint.activate([
+            nameLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            nameLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            nameLabel.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10)
+        ])
+    }
 }
 
-// Conform to UITableViewDataSource
 extension TaskListViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -71,17 +115,5 @@ extension TaskListViewController: UITableViewDataSource {
         cell.configure(with: tasks[indexPath.row])
 
         return cell
-    }
-}
-
-// Conform to UITableViewDelegate
-extension TaskListViewController: UITableViewDelegate {
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        // Deselect the row with animation
-        tableView.deselectRow(at: indexPath, animated: true)
-        
-        // Trigger the segue to navigate to the detail view controller
-        performSegue(withIdentifier: "DetailSegue", sender: self)
     }
 }

@@ -2,8 +2,9 @@
 //  TaskAnnotationView.swift
 //  project-1-lousalvant
 //
-//  Created by Lou-Michael Salvant on 8/30/24.
+//  Created by Lou-Michael Salvant on 8/29/24.
 //
+
 
 import UIKit
 import MapKit
@@ -122,4 +123,3 @@ class TaskAnnotationView: MKAnnotationView {
         layer.shadowRadius = 5
     }
 }
-

@@ -1,15 +1,7 @@
-//
-//  TaskDetailViewController.swift
-//  project-1-lousalvant
-//
-//  Created by Lou-Michael Salvant on 8/30/24.
-//
-
 import UIKit
 import MapKit
 import PhotosUI
 
-// TODO: Import PhotosUI
 class PhotoViewController: UIViewController {
    
     @IBOutlet weak var photoView: UIImageView!
@@ -40,7 +32,6 @@ class TaskDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // TODO: Register custom annotation view
         // Register custom annotation view
         mapView.register(TaskAnnotationView.self, forAnnotationViewWithReuseIdentifier: TaskAnnotationView.identifier)
 
@@ -57,28 +48,23 @@ class TaskDetailViewController: UIViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "PhotoSegue" {
-            if let photoViewController = segue.destination as? PhotoViewController {
-                photoViewController.task = task
-            }
-        } else if segue.identifier == "DetailSegue" {
-            // handle the segue to TaskDetailViewController if needed
-        }
-    }
 
+            // Segue to Detail View Controller
+         if segue.identifier == "PhotoSegue" {
+             if let photoViewController = segue.destination as? PhotoViewController {
+                 photoViewController.task = task
+              }
+          }
+      }
 
     /// Configure UI for the given task
     private func updateUI() {
-        guard let task = task else {
-            print("Task is not set.")
-            return
-        }
-        
         titleLabel.text = task.title
         descriptionLabel.text = task.description
 
         let completedImage = UIImage(systemName: task.isComplete ? "circle.inset.filled" : "circle")
 
+        // calling `withRenderingMode(.alwaysTemplate)` on an image allows for coloring the image via it's `tintColor` property.
         completedImageView.image = completedImage?.withRenderingMode(.alwaysTemplate)
         completedLabel.text = task.isComplete ? "Complete" : "Incomplete"
 
@@ -88,12 +74,11 @@ class TaskDetailViewController: UIViewController {
 
         mapView.isHidden = !task.isComplete
         attachPhotoButton.isHidden = task.isComplete
+        
         viewPhoto.isHidden = !task.isComplete
     }
 
-
     @IBAction func didTapAttachPhotoButton(_ sender: Any) {
-        // TODO: Check and/or request photo library access authorization.
         
         // If authorized, show photo picker, otherwise request authorization.
         // If authorization denied, show alert with option to go to settings to update authorization.
@@ -123,7 +108,6 @@ class TaskDetailViewController: UIViewController {
     }
 
     private func presentImagePicker() {
-        // TODO: Create, configure and present image picker.
         // Create a configuration object
         var config = PHPickerConfiguration(photoLibrary: PHPhotoLibrary.shared())
 
@@ -148,21 +132,15 @@ class TaskDetailViewController: UIViewController {
     }
 
     func updateMapView() {
-        guard let task = task else {
-            print("Task is not set.")
-            return
-        }
+        // Make sure the task has image location.
+        guard let imageLocation = task.imageLocation else { return }
 
-        // Check if the task has an image location
-        guard let imageLocation = task.imageLocation else {
-            print("Task does not have a location associated with the image.")
-            return
-        }
-
-        // Get the coordinate from the image location.
+        // Get the coordinate from the image location. This is the latitude / longitude of the location.
+        // https://developer.apple.com/documentation/mapkit/mkmapview
         let coordinate = imageLocation.coordinate
 
         // Set the map view's region based on the coordinate of the image.
+        // The span represents the maps's "zoom level". A smaller value yields a more "zoomed in" map area, while a larger value is more "zoomed out".
         let region = MKCoordinateRegion(center: coordinate, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
         mapView.setRegion(region, animated: true)
 
@@ -172,10 +150,6 @@ class TaskDetailViewController: UIViewController {
         mapView.addAnnotation(annotation)
     }
 }
-
-// TODO: Conform to PHPickerViewControllerDelegate + implement required method(s)
-
-// TODO: Conform to MKMapKitDelegate + implement mapView(_:viewFor:) delegate method.
 
 // Helper methods to present various alerts
 extension TaskDetailViewController {

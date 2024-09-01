@@ -17,6 +17,7 @@
 		E47415442C81E2CA0058D3A1 /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47415432C81E2CA0058D3A1 /* Task.swift */; };
 		E47415482C81E5250058D3A1 /* TaskDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47415472C81E5250058D3A1 /* TaskDetailViewController.swift */; };
 		E474154A2C81EDEA0058D3A1 /* TaskAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47415492C81EDEA0058D3A1 /* TaskAnnotationView.swift */; };
+		E474154D2C849F310058D3A1 /* TaskComposeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E474154C2C849F310058D3A1 /* TaskComposeViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 		E47415432C81E2CA0058D3A1 /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
 		E47415472C81E5250058D3A1 /* TaskDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDetailViewController.swift; sourceTree = "<group>"; };
 		E47415492C81EDEA0058D3A1 /* TaskAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskAnnotationView.swift; sourceTree = "<group>"; };
+		E474154C2C849F310058D3A1 /* TaskComposeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskComposeViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +69,7 @@
 				E474152B2C8114240058D3A1 /* AppDelegate.swift */,
 				E474152D2C8114240058D3A1 /* SceneDelegate.swift */,
 				E474153F2C81DEE10058D3A1 /* Task List */,
+				E474154B2C849EF90058D3A1 /* Task Compose */,
 				E47415462C81E4D10058D3A1 /* Task Detail */,
 				E47415422C81E2B80058D3A1 /* Models */,
 				E47415312C8114240058D3A1 /* Main.storyboard */,
@@ -101,6 +104,14 @@
 				E47415492C81EDEA0058D3A1 /* TaskAnnotationView.swift */,
 			);
 			path = "Task Detail";
+			sourceTree = "<group>";
+		};
+		E474154B2C849EF90058D3A1 /* Task Compose */ = {
+			isa = PBXGroup;
+			children = (
+				E474154C2C849F310058D3A1 /* TaskComposeViewController.swift */,
+			);
+			path = "Task Compose";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -176,6 +187,7 @@
 			files = (
 				E47415482C81E5250058D3A1 /* TaskDetailViewController.swift in Sources */,
 				E47415412C81DEF50058D3A1 /* TaskCell.swift in Sources */,
+				E474154D2C849F310058D3A1 /* TaskComposeViewController.swift in Sources */,
 				E47415302C8114240058D3A1 /* TaskListViewController.swift in Sources */,
 				E47415442C81E2CA0058D3A1 /* Task.swift in Sources */,
 				E474152C2C8114240058D3A1 /* AppDelegate.swift in Sources */,
